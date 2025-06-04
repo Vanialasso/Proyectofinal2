@@ -12,6 +12,7 @@
 #include <public/ccbkgtcexec_iface_v1.h>
 #include <public/cchk_fdirmng_iface_v1.h>
 #include <public/cctcmanager_iface_v1.h>
+#include <public/obsmng_iface_v1.h>
  
 #ifdef CONFIG_EDROOMBP_DEPLOYMENT_NEED_TASK
  
@@ -36,8 +37,9 @@ int main (void){
 	CCBKGTCExec	comp2(2, 10, EDROOMprioVeryLow, 1024, systemDeployment.GetComp2Memory());
 	CCHK_FDIRMng	comp3(3, 13, EDROOMprioNormal, 4096, systemDeployment.GetComp3Memory());
 	CCTCManager	comp4(4, 10, EDROOMprioNormal, 4096, systemDeployment.GetComp4Memory());
+	ObsMng	comp5(5, 15, EDROOMprioVeryHigh, 1024, systemDeployment.GetComp5Memory());
  
-	systemDeployment.Config(&comp1, &comp2, &comp3, &comp4);
+	systemDeployment.Config(&comp1, &comp2, &comp3, &comp4, &comp5);
  
 	systemDeployment.Start();
  

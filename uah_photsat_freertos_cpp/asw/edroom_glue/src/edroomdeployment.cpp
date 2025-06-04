@@ -11,7 +11,8 @@
 void MainWait(UAHPhotSat   &comp1,
 					CCBKGTCExec   &comp2,
 					CCHK_FDIRMng   &comp3,
-					CCTCManager   &comp4){
+					CCTCManager   &comp4,
+					ObsMng   &comp5){
  
 	Pr_Time waitTime(3, 0);
  
@@ -19,7 +20,8 @@ void MainWait(UAHPhotSat   &comp1,
 	while(!comp1.EDROOMIsComponentFinished()
 				||!comp2.EDROOMIsComponentFinished()
 				||!comp3.EDROOMIsComponentFinished()
-				||!comp4.EDROOMIsComponentFinished())
+				||!comp4.EDROOMIsComponentFinished()
+				||!comp5.EDROOMIsComponentFinished())
 #else
 	while(true)
 #endif
@@ -41,6 +43,8 @@ void CEDROOMSystemMemory::SetMemory(){
 					,13,comp3QueueNodes, &comp3QueueNodesMarks[0]);
 	comp4Memory.SetMemory(10, comp4Messages, &comp4MessagesMarks[0]
 					,10,comp4QueueNodes, &comp4QueueNodesMarks[0]);
+	comp5Memory.SetMemory(10, comp5Messages, &comp5MessagesMarks[0]
+					,15,comp5QueueNodes, &comp5QueueNodesMarks[0]);
 }
  
 //*****************************************************************************
@@ -49,11 +53,13 @@ void CEDROOMSystemMemory::SetMemory(){
 void CEDROOMSystemCommSAP::SetComponents(UAHPhotSat   *p_comp1,
 										CCBKGTCExec   *p_comp2,
 										CCHK_FDIRMng   *p_comp3,
-										CCTCManager   *p_comp4){
+										CCTCManager   *p_comp4,
+										ObsMng   *p_comp5){
 	mp_comp1=p_comp1;
 	mp_comp2=p_comp2;
 	mp_comp3=p_comp3;
 	mp_comp4=p_comp4;
+	mp_comp5=p_comp5;
 }
  
  
@@ -63,6 +69,34 @@ void CEDROOMSystemCommSAP::SetComponents(UAHPhotSat   *p_comp1,
 //*****************************************************************************
 //*****************************************************************************
  
+ 
+TEDROOMSignal CEDROOMSystemCommSAP::C5ObsMng_PObsmng__C4TCManager_PObsmng(TEDROOMSignal signalOut){
+ 
+	TEDROOMSignal signalIn;
+ 
+	switch(signalOut){
+ 
+		default: signalIn=(TEDROOMSignal)(-1); break;
+ 
+	}
+	return signalIn;
+ 
+}
+ 
+TEDROOMSignal CEDROOMSystemCommSAP::C4TCManager_PObsmng__C5ObsMng_PObsmng(TEDROOMSignal signalOut){
+ 
+	TEDROOMSignal signalIn;
+ 
+	switch(signalOut){
+ 
+		case( CCTCManager::SObsMng_TC):	 signalIn=ObsMng::SObsMng_TC; break;
+ 
+		default: signalIn=(TEDROOMSignal)(-1); break;
+ 
+	}
+	return signalIn;
+ 
+}
  
 TEDROOMSignal CEDROOMSystemCommSAP::C4TCManager_PBKGExecCtrl__C2BKGTCExec_PBKGExecCtrl(TEDROOMSignal signalOut){
  
@@ -140,9 +174,15 @@ void CEDROOMSystemCommSAP::RegisterInterfaces(){
 	m_localCommSAP.RegisterInterface(2, mp_comp3->HK_FDIRTimer, mp_comp3);
  
 	// Register Interface for Component 4
-	m_localCommSAP.RegisterInterface(1, mp_comp4->RxTC, mp_comp4);
-	m_localCommSAP.RegisterInterface(2, mp_comp4->BKGExecCtrl, mp_comp4);
-	m_localCommSAP.RegisterInterface(3, mp_comp4->HK_FDIRCtrl, mp_comp4);
+	m_localCommSAP.RegisterInterface(1, mp_comp4->Obsmng, mp_comp4);
+	m_localCommSAP.RegisterInterface(2, mp_comp4->RxTC, mp_comp4);
+	m_localCommSAP.RegisterInterface(3, mp_comp4->BKGExecCtrl, mp_comp4);
+	m_localCommSAP.RegisterInterface(4, mp_comp4->HK_FDIRCtrl, mp_comp4);
+ 
+	// Register Interface for Component 5
+	m_localCommSAP.RegisterInterface(1, mp_comp5->Obsmng, mp_comp5);
+	m_localCommSAP.RegisterInterface(2, mp_comp5->ObservTimer, mp_comp5);
+	m_localCommSAP.RegisterInterface(3, mp_comp5->AttCtrlTimer, mp_comp5);
  
 }
  
@@ -152,11 +192,15 @@ void CEDROOMSystemCommSAP::RegisterInterfaces(){
  
 void CEDROOMSystemCommSAP::SetLocalConnections(){
  
-	m_localCommSAP.Connect(mp_comp4->BKGExecCtrl, mp_comp2->BKGExecCtrl, connections[0], 
+	m_localCommSAP.Connect(mp_comp5->Obsmng, mp_comp4->Obsmng, connections[0], 
+					C5ObsMng_PObsmng__C4TCManager_PObsmng, 
+					C4TCManager_PObsmng__C5ObsMng_PObsmng);
+ 
+	m_localCommSAP.Connect(mp_comp4->BKGExecCtrl, mp_comp2->BKGExecCtrl, connections[1], 
 					C4TCManager_PBKGExecCtrl__C2BKGTCExec_PBKGExecCtrl, 
 					C2BKGTCExec_PBKGExecCtrl__C4TCManager_PBKGExecCtrl);
  
-	m_localCommSAP.Connect(mp_comp4->HK_FDIRCtrl, mp_comp3->HK_FDIRCtrl, connections[1], 
+	m_localCommSAP.Connect(mp_comp4->HK_FDIRCtrl, mp_comp3->HK_FDIRCtrl, connections[2], 
 					C4TCManager_PHK_FDIRCtrl__C3HK_FDIRMng_PHK_FDIRCtrl, 
 					C3HK_FDIRMng_PHK_FDIRCtrl__C4TCManager_PHK_FDIRCtrl);
  
@@ -197,17 +241,20 @@ CEDROOMSystemDeployment::CEDROOMSystemDeployment(){
 void CEDROOMSystemDeployment::Config(UAHPhotSat   *p_comp1,
 											CCBKGTCExec   *p_comp2,
 											CCHK_FDIRMng   *p_comp3,
-											CCTCManager   *p_comp4){
+											CCTCManager   *p_comp4,
+											ObsMng   *p_comp5){
  
 	mp_comp1=p_comp1;
 	mp_comp2=p_comp2;
 	mp_comp3=p_comp3;
 	mp_comp4=p_comp4;
+	mp_comp5=p_comp5;
  
 	systemCommSAP.SetComponents(	p_comp1,
 									p_comp2,
 									p_comp3,
-									p_comp4);
+									p_comp4,
+									p_comp5);
  
 	systemCommSAP.RegisterInterfaces();
 	systemCommSAP.SetConnections();
@@ -222,6 +269,7 @@ void CEDROOMSystemDeployment::StartComponents(){
 	mp_comp2->EDROOMStart();
 	mp_comp3->EDROOMStart();
 	mp_comp4->EDROOMStart();
+	mp_comp5->EDROOMStart();
  
 }
  
@@ -245,7 +293,8 @@ StartComponents();
 	MainWait(*mp_comp1,
 				*mp_comp2,
 				*mp_comp3,
-				*mp_comp4);
+				*mp_comp4,
+				*mp_comp5);
  
  
 #endif
@@ -267,7 +316,8 @@ Pr_TaskRV_t CEDROOMSystemDeployment::main_task(Pr_TaskP_t){
 	MainWait(*systemDeployment.mp_comp1,
 				*systemDeployment.mp_comp2,
 				*systemDeployment.mp_comp3,
-				*systemDeployment.mp_comp4);
+				*systemDeployment.mp_comp4,
+				*systemDeployment.mp_comp5);
  
 }
 #endif

@@ -102,7 +102,7 @@ bool UAHPhotSat::EDROOMIsComponentFinished()
 {
 
 
-	return ( BKGTCExec.EDROOMIsComponentFinished() && HK_FDIRMng.EDROOMIsComponentFinished() && TCManager.EDROOMIsComponentFinished() && CEDROOMComponent::EDROOMIsComponentFinished());
+	return ( BKGTCExec.EDROOMIsComponentFinished() && HK_FDIRMng.EDROOMIsComponentFinished() && TCManager.EDROOMIsComponentFinished() && ObsMng.EDROOMIsComponentFinished() && CEDROOMComponent::EDROOMIsComponentFinished());
 
 }
 

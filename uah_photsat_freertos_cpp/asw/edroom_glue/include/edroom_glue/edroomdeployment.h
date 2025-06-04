@@ -16,6 +16,7 @@
 #include <public/ccbkgtcexec_iface_v1.h>
 #include <public/cchk_fdirmng_iface_v1.h>
 #include <public/cctcmanager_iface_v1.h>
+#include <public/obsmng_iface_v1.h>
 // ***********************************************************************
 // class CEDROOMSystemMemory
 // ***********************************************************************
@@ -46,12 +47,19 @@ class CEDROOMSystemMemory{
 	CEDROOMQueue::CQueueNode	comp4QueueNodes[10];
 	bool	comp4QueueNodesMarks[10];
  
+	//!Messages Memory of component comp5
+	CEDROOMMessage	comp5Messages[10];
+	bool	comp5MessagesMarks[10];
+	CEDROOMQueue::CQueueNode	comp5QueueNodes[15];
+	bool	comp5QueueNodesMarks[15];
+ 
 	public:
  
 	UAHPhotSat::CEDROOMMemory comp1Memory;
 	CCBKGTCExec::CEDROOMMemory comp2Memory;
 	CCHK_FDIRMng::CEDROOMMemory comp3Memory;
 	CCTCManager::CEDROOMMemory comp4Memory;
+	ObsMng::CEDROOMMemory comp5Memory;
  
 //!Set Memory
 	void SetMemory();
@@ -67,12 +75,13 @@ class CEDROOMSystemCommSAP{
  
 //!Conections
  
-	CEDROOMLocalConnection connections[2];
+	CEDROOMLocalConnection connections[3];
  
 	UAHPhotSat   * mp_comp1;
 	CCBKGTCExec   * mp_comp2;
 	CCHK_FDIRMng   * mp_comp3;
 	CCTCManager   * mp_comp4;
+	ObsMng   * mp_comp5;
  
  
 //!Set Components
@@ -80,8 +89,14 @@ class CEDROOMSystemCommSAP{
 	void SetComponents(UAHPhotSat   *p_comp1,
 							CCBKGTCExec   *p_comp2,
 							CCHK_FDIRMng   *p_comp3,
-							CCTCManager   *p_comp4);
+							CCTCManager   *p_comp4,
+							ObsMng   *p_comp5);
  
+ 
+//Signal Conversion
+ 
+	static TEDROOMSignal C5ObsMng_PObsmng__C4TCManager_PObsmng(TEDROOMSignal signal);
+	static TEDROOMSignal C4TCManager_PObsmng__C5ObsMng_PObsmng(TEDROOMSignal signal);
  
 //Signal Conversion
  
@@ -126,6 +141,7 @@ static Pr_TaskRV_t main_task(Pr_TaskP_t);
 	CCBKGTCExec   * mp_comp2;
 	CCHK_FDIRMng   * mp_comp3;
 	CCTCManager   * mp_comp4;
+	ObsMng   * mp_comp5;
  
 	public:
  
@@ -135,7 +151,8 @@ static Pr_TaskRV_t main_task(Pr_TaskP_t);
 	void Config(UAHPhotSat   *p_comp1,
 					CCBKGTCExec   *p_comp2,
 					CCHK_FDIRMng   *p_comp3,
-					CCTCManager   *p_comp4);
+					CCTCManager   *p_comp4,
+					ObsMng   *p_comp5);
  
 //!Deployment Start
 	void Start();
@@ -148,6 +165,7 @@ static Pr_TaskRV_t main_task(Pr_TaskP_t);
 	CCBKGTCExec::CEDROOMMemory 		* GetComp2Memory(){return &systemMemory.comp2Memory;}
 	CCHK_FDIRMng::CEDROOMMemory 		* GetComp3Memory(){return &systemMemory.comp3Memory;}
 	CCTCManager::CEDROOMMemory 		* GetComp4Memory(){return &systemMemory.comp4Memory;}
+	ObsMng::CEDROOMMemory 		* GetComp5Memory(){return &systemMemory.comp5Memory;}
  
 };
 #endif
