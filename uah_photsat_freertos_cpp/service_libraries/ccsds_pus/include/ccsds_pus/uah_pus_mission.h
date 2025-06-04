@@ -1,0 +1,52 @@
+#ifndef INCLUDE__UAH_PUS_MISSION_H_
+#define INCLUDE__UAH_PUS_MISSION_H_
+
+#include "public/config.h"
+
+/**
+ * \brief Assigned Application Process ID
+ */
+#define UAH_APID    0x32C
+
+/**
+ * \brief Destination ID to be used on the TM packets
+ */
+#define UAH_DESTINATION_ID  0x78
+
+
+/**
+ * \brief Source ID origin of the TC packets
+ */
+#define  UAH_SOURCE_ID 0x78
+
+/**
+ * \brief PUS VERSION IN EPD MISSION
+ */
+
+#define UAH_PUS_VERSION_TIMESTATUS  0x10
+
+
+//MAX_NUM_OF_BYTES must be < 2^16
+#define UAH_PUS_TC_MAX_NUM_OF_BYTES (256)
+#define UAH_PUS_TM_MAX_NUM_OF_BYTES (256)
+
+#define UAH_PUS_TM_TC_MAX_NUM_OF_BYTES (256)
+
+#define UAH_PUS_TM_TC_PACKET_HEADER_SIZE 6
+
+#define UAH_PUS_TC_DF_HEADER_SIZE 5
+
+#define UAH_PUS_TM_DF_HEADER_SIZE  13
+
+#define UAH_PUS_TM_TC_DF_HEADER_OFFSET (UAH_PUS_TM_TC_PACKET_HEADER_SIZE)
+
+#define UAH_PUS_TC_APP_DATA_OFFSET (UAH_PUS_TM_TC_PACKET_HEADER_SIZE + UAH_PUS_TC_DF_HEADER_SIZE)
+
+#define UAH_PUS_TM_APP_DATA_OFFSET (UAH_PUS_TM_TC_PACKET_HEADER_SIZE + UAH_PUS_TM_DF_HEADER_SIZE)
+
+#define UAH_PUS_TC_APPDATA_MAX_NUM_OF_BYTES (UAH_PUS_TC_MAX_NUM_OF_BYTES - UAH_PUS_TC_APP_DATA_OFFSET- 2)
+
+#define UAH_PUS_TM_APPDATA_MAX_NUM_OF_BYTES (UAH_PUS_TM_MAX_NUM_OF_BYTES - UAH_PUS_TM_APP_DATA_OFFSET)
+
+
+#endif /* INCLUDE__UAH_PUS_MISSION_H_ */

@@ -1,0 +1,9 @@
+dataclass CDAcceptReport{
+
+
+
+	uri := es.uah.aut.srg.edroom.mclev.data_sai.cdacceptreport.cdacceptreport_iface;
+	version := v1;
+
+
+};

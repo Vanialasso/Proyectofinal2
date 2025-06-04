@@ -1,0 +1,31 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+C_SRCS += \
+../service_libraries/icuasw_pus_services/asw_pus_service1/src/asw_pus_service1.c 
+
+C_DEPS += \
+./service_libraries/icuasw_pus_services/asw_pus_service1/src/asw_pus_service1.d 
+
+OBJS += \
+./service_libraries/icuasw_pus_services/asw_pus_service1/src/asw_pus_service1.o 
+
+
+# Each subdirectory must supply rules for building sources it contributes
+service_libraries/icuasw_pus_services/asw_pus_service1/src/%.o: ../service_libraries/icuasw_pus_services/asw_pus_service1/src/%.c service_libraries/icuasw_pus_services/asw_pus_service1/src/subdir.mk
+	@echo 'Building file: $<'
+	@echo 'Invoking: GCC C Compiler'
+	gcc -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/llsw/freertos_osswr/Source/include" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/service_libraries/icuasw_pus_services/asw_pus_service1/include" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/llsw/emu_hw_timecode_drv/include" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/llsw/emu_adc_drv/include" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/asw/edroom_glue/include" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/service_libraries/crc/include" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/service_libraries/edroomsl/edroombp/include" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/asw/dataclasses/CDTMHandler/include" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/llsw/emu_gss/include" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/service_libraries/ccsds_pus/include" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/llsw/tmtc_dyn_mem/include" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/service_libraries/serialize/include" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/llsw/config/include" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/llsw/emu_sc_channel_drv/include" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/llsw/sc_channel_drv/include" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/llsw/config/include" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/llsw/freertos_osswr" -I"/home/opolo70/OBDH-workspace/asw_pus_INTA_freertos_project_2024_resuelto/llsw/freertos_osswr/Source/portable/ThirdParty/GCC/Posix" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+
+clean: clean-service_libraries-2f-icuasw_pus_services-2f-asw_pus_service1-2f-src
+
+clean-service_libraries-2f-icuasw_pus_services-2f-asw_pus_service1-2f-src:
+	-$(RM) ./service_libraries/icuasw_pus_services/asw_pus_service1/src/asw_pus_service1.d ./service_libraries/icuasw_pus_services/asw_pus_service1/src/asw_pus_service1.o
+
+.PHONY: clean-service_libraries-2f-icuasw_pus_services-2f-asw_pus_service1-2f-src
+

@@ -1,0 +1,9 @@
+dataclass CDTCMemDescriptor{
+
+
+
+	uri := es.uah.aut.srg.edroom.mclev.data_sai.cdtcmemdescriptor.cdtcmemdescriptor_iface;
+	version := v1;
+
+
+};
