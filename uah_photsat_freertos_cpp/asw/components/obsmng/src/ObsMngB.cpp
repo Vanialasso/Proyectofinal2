@@ -10,7 +10,8 @@
 
 	// CONSTRUCTORS***********************************************
 
-ObsMng::EDROOM_CTX_Top_0::EDROOM_CTX_Top_0(ObsMng &act ):
+ObsMng::EDROOM_CTX_Top_0::EDROOM_CTX_Top_0(ObsMng &act,
+	 Pr_Time & EDROOMpVarVNextTimeout ):
 
 	EDROOMcomponent(act),
 	Msg(EDROOMcomponent.Msg),
@@ -18,7 +19,8 @@ ObsMng::EDROOM_CTX_Top_0::EDROOM_CTX_Top_0(ObsMng &act ):
 	Obsmng(EDROOMcomponent.Obsmng),
 	ObservTimer(EDROOMcomponent.ObservTimer),
 	AttCtrlTimer(EDROOMcomponent.AttCtrlTimer),
-	CImageInterval(0,500000)
+	CImageInterval(0,500000),
+	VNextTimeout(EDROOMpVarVNextTimeout)
 {
 }
 
@@ -30,7 +32,8 @@ ObsMng::EDROOM_CTX_Top_0::EDROOM_CTX_Top_0(EDROOM_CTX_Top_0 &context):
 	Obsmng(context.Obsmng),
 	ObservTimer(context.ObservTimer),
 	AttCtrlTimer(context.AttCtrlTimer),
-	CImageInterval(0,500000)
+	CImageInterval(0,500000),
+	VNextTimeout(context.VNextTimeout)
 {
 
 }
@@ -188,7 +191,8 @@ bool	ObsMng::EDROOM_CTX_Top_0::GReadyToObservation()
 	// CONSTRUCTOR*************************************************
 
 ObsMng::EDROOM_SUB_Top_0::EDROOM_SUB_Top_0 (ObsMng&act):
-		EDROOM_CTX_Top_0(act)
+		EDROOM_CTX_Top_0(act,
+			VNextTimeout)
 {
 
 }
@@ -219,8 +223,8 @@ void ObsMng::EDROOM_SUB_Top_0::EDROOMBehaviour()
 				//Next State is Standby
 				edroomNextState = Standby;
 				break;
-			//To Choice Point DoAttitudeCtrl() 
-			case (DoAttitudeCtrl() ):
+			//To Choice Point DoAttitudeCtrl
+			case (DoAttitudeCtrl):
 
 				//Execute Action 
 				FDoAttitudeCtrl();
@@ -230,9 +234,9 @@ void ObsMng::EDROOM_SUB_Top_0::EDROOMBehaviour()
 					//Execute Action 
 					FToObservation();
 
-					//Branch taken is DoAttitudeCtrl() _ToObservation()
+					//Branch taken is DoAttitudeCtrl_ToObservation()
 					edroomCurrentTrans.localId =
-						DoAttitudeCtrl() _ToObservation();
+						DoAttitudeCtrl_ToObservation();
 
 					//Next State is Observation
 					edroomNextState = Observation;
@@ -243,9 +247,9 @@ void ObsMng::EDROOM_SUB_Top_0::EDROOMBehaviour()
 					//Execute Action 
 					FProgAttitudeCtrl();
 
-					//Branch taken is DoAttitudeCtrl() _ProgAttitudeCtrl
+					//Branch taken is DoAttitudeCtrl_ProgAttitudeCtrl
 					edroomCurrentTrans.localId =
-						DoAttitudeCtrl() _ProgAttitudeCtrl;
+						DoAttitudeCtrl_ProgAttitudeCtrl;
 
 					//Next State is Standby
 					edroomNextState = Standby;
@@ -270,22 +274,22 @@ void ObsMng::EDROOM_SUB_Top_0::EDROOMBehaviour()
 					//Next State is Standby
 					edroomNextState = Standby;
 				 } 
-				//Default Branch FProgTakeImage()
+				//Default Branch ProgTakeImage()
 				else
 				{
 					//Execute Action 
 					FProgTakeImage();
 
-					//Branch taken is TakeImage()_FProgTakeImage()
+					//Branch taken is TakeImage()_ProgTakeImage()
 					edroomCurrentTrans.localId =
-						TakeImage()_FProgTakeImage();
+						TakeImage()_ProgTakeImage();
 
 					//Next State is Observation
 					edroomNextState = Observation;
 				 } 
 				break;
-			//Next Transition is Exec
-			case (Exec):
+			//Next Transition is ExecObsMngTC
+			case (ExecObsMngTC):
 				//Execute Action 
 				FExecObsMng_TC();
 				//Next State is Standby
@@ -388,8 +392,8 @@ TEDROOMTransId ObsMng::EDROOM_SUB_Top_0::EDROOMStandbyArrival()
 				 if (*Msg->GetPInterface() == AttCtrlTimer)
 				{
 
-					//Next transition is  DoAttitudeCtrl() 
-					edroomCurrentTrans.localId = DoAttitudeCtrl() ;
+					//Next transition is  DoAttitudeCtrl
+					edroomCurrentTrans.localId = DoAttitudeCtrl;
 					edroomCurrentTrans.distanceToContext = 0 ;
 					edroomValidMsg=true;
 				 }
@@ -401,8 +405,8 @@ TEDROOMTransId ObsMng::EDROOM_SUB_Top_0::EDROOMStandbyArrival()
 				 if (*Msg->GetPInterface() == Obsmng)
 				{
 
-					//Next transition is  Exec
-					edroomCurrentTrans.localId= Exec;
+					//Next transition is  ExecObsMngTC
+					edroomCurrentTrans.localId= ExecObsMngTC;
 					edroomCurrentTrans.distanceToContext = 0;
 					edroomValidMsg=true;
 				 }

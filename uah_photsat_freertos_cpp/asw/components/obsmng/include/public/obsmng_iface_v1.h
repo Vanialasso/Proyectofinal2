@@ -195,25 +195,28 @@ public:
 
 		//!Transition Identifiers
 		enum TEDROOMTransitionID{Init,
-			DoAttitudeCtrl() ,
-			DoAttitudeCtrl() _ToObservation(),
-			DoAttitudeCtrl() _ProgAttitudeCtrl,
+			DoAttitudeCtrl,
+			DoAttitudeCtrl_ToObservation(),
+			DoAttitudeCtrl_ProgAttitudeCtrl,
 			TakeImage(),
 			TakeImage()_ObservationProg,
-			TakeImage()_FProgTakeImage(),
-			Exec,
+			TakeImage()_ProgTakeImage(),
+			ExecObsMngTC,
 			EDROOMMemoryTrans };
 
 		//!Constants
 		const Pr_Time CImageInterval;
 
 
+		//!Variables
+		Pr_Time &VNextTimeout;
 
 
 
 
 		//!Constructor
-		EDROOM_CTX_Top_0 (ObsMng &act );
+		EDROOM_CTX_Top_0 (ObsMng &act,
+				Pr_Time & EDROOMpVarVNextTimeout );
 
 		//!Copy constructor
 		EDROOM_CTX_Top_0 (EDROOM_CTX_Top_0 &context);
@@ -315,6 +318,8 @@ public:
 		//!next state identifier
 		EDROOM_CTX_Top_0::TEDROOMStateID edroomNextState;
 
+		//!Variables
+		Pr_Time VNextTimeout;
 
 
 
