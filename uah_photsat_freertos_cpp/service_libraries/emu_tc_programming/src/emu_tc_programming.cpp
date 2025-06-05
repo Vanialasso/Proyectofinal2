@@ -33,7 +33,8 @@
 #include <public/emu_gss_v1.h>
 
 //TODO Complete FT_UAH_PHOTSAT_SERV_129_0010
+#define FT_UAH_PHOTSAT_SERV_129_0010
 
 //TODO Complete FT_UAH_PHOTSAT_SERV_129_FDIR_0020
 
-
+#define FT_UAH_PHOTSAT_SERV_129_FDIR_0020
